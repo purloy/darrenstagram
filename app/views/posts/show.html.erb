@@ -1,0 +1,118 @@
+<div class = "container">
+
+	<div class = "col-sm-4">
+		<div class = "well well-sm">
+
+			<%= image_tag @post.image.url, class: 'image-show' %>
+
+		 	<div class = "average-comment-rating" data-score=<%= @average_review %>></div>
+
+			<p class = "text-center"><%= @post.description %></p>
+
+		</div>
+
+			<% if user_signed_in? %>
+		
+				<% if current_user.id ==  @post.user_id %>
+
+					<%= link_to 'Edit', edit_post_path(@post), class: "btn btn-info"%>
+					<%= link_to 'Delete', root_path(@post), method: :delete, data: { confirm: "Are you sure?"}, class: "btn btn-danger" %>
+
+				<% end %>
+
+			<% end %>
+
+	</div>
+
+	<div class = "col-sm-8">
+
+		<div class = "well well-sm">
+
+			<% if user_signed_in?%>
+
+				<%= simple_form_for([@post, @comment]) do |f| %>
+						<div id ="rating-form">
+							<label>Rate: </label>
+						</div>
+					<%= f.input :comment %>
+					<%= f.submit 'Comment', class: "btn btn-info"%>
+
+				<% end %>
+
+			<% end %>
+
+			<br><br>
+
+			<% @post.comments.order("created_at desc").each do |comment| %>
+
+				<div class="panel panel-default">
+
+					<div class="panel-heading">
+						<p><%= comment.user.email %></p>
+						<cite><small><%= l comment.created_at, :format => :short %></small></cite>
+						
+
+					</div>
+
+					<div class="panel-body">
+						<div class = "comment-rating" data-score= "<%= comment.rating %>"></div>
+						<p><%= comment.comment %></p>
+
+					</div>
+					<% if user_signed_in? %>
+
+						<% if comment.user_id == current_user.id %>
+
+							<div class="panel-footer">
+							
+								<%= link_to 'Edit', edit_post_comment_path(comment, @post), class: "btn btn-info" %>
+							
+							</div>
+
+						<% end %>
+
+					<% end %>
+
+				</div>
+
+			<% end %>
+
+		</div>
+
+	</div>
+
+</div>
+
+<script>
+	$('#rating-form').raty({
+		path: '/assets',
+		scoreName: 'comment[rating]'
+	});
+
+</script>
+
+<script>
+    $('.comment-rating').raty({
+      readOnly: true,
+      score: function(){
+        return $(this).attr('data-score');
+
+      },
+      path: '/assets/'
+    });
+
+</script>
+
+
+<script>
+    $('.average-comment-rating').raty({
+      readOnly: true,
+      score: function(){
+        return $(this).attr('data-score');
+
+      },
+      path: '/assets/'
+    });
+
+</script>
+ 
