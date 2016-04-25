@@ -19,4 +19,6 @@
 					<p class ="p-center"><strong><%= post.description %></strong><p>	
 				</div>
 			<% end %>
+			<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
 		</div>
+
