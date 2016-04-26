@@ -42,8 +42,8 @@
 			<% end %>
 
 			<br><br>
-
-			<% @post.comments.order("created_at desc").each do |comment| %>
+			 <% @postcomment = @post.comments.order("created_at desc").paginate(:page => params[:page], :per_page => 5) %>
+			<% @postcomment.each do |comment| %>
 
 				<div class="panel panel-default">
 
@@ -79,6 +79,8 @@
 
 		</div>
 
+		<%= will_paginate @postcomment, renderer: BootstrapPagination::Rails %>
+		
 	</div>
 
 </div>

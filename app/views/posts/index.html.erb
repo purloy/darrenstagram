@@ -1,24 +1,33 @@
+<div class="posts-wrapper row">
 
+	<% @posts.order("created_at asc").each do |post| %>
 
-	
-		<div class="posts-wrapper row">
-			<% @posts.order("created_at asc").each do |post| %>
-				<div class = "post">
-					<div class="post-head">
-						<div class ="name">
-							<p>Posted by: <%= post.user.email %></p>
-							<cite><small><%= l post.created_at, :format => :short %> </small></cite>
-						</div>
-					</div>
+		<div class = "post">
 
-					<div class="image center-block">
-						
-							<%= link_to (image_tag post.image.url, class: 'image-index'), post_path(post) %><br>
-						
-					</div>
-					<p class ="p-center"><strong><%= post.description %></strong><p>	
+			<div class="post-head">
+
+				<div class ="name">
+
+					<p>Posted by: <%= post.user.email %></p>
+					<cite><small><%= l post.created_at, :format => :short %> </small></cite>
+
 				</div>
-			<% end %>
-			<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+
+			</div>
+
+				<div class="image center-block">
+						
+					<%= link_to (image_tag post.image.url, class: 'image-index'), post_path(post) %><br>
+						
+				</div>
+
+				<p class ="p-center"><strong><%= post.description %></strong><p>	
+
 		</div>
+
+	<% end %>
+
+	<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+
+</div>
 
